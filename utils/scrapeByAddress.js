@@ -10,6 +10,8 @@ const scrapeByAddress = async (url) => {
     let addresStats = $(
       'p[class="Text-c11n-8-18-0__aiai24-0 StyledParagraph-c11n-8-18-0__sc-18ze78a-0 pnHPs"]'
     ).text();
+    console.log("scrapeByAddress -> addresStats", addresStats);
+    console.log(typeof addresStats);
     return { stats: addresStats, status: "success" };
   } catch (error) {
     return { stats: null, status: "fail" };

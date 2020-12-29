@@ -2,7 +2,7 @@ const req = require("request-promise");
 const cheerio = require("cheerio");
 
 const scrapeByZipCode = async (zip) => {
-  const url = `https://www.zillow.com/homes/${zip}_rb/`;
+  const url = `${process.env.ZILLOW_ZIP_CODE}${zip}_rb/`;
   const result = [];
   try {
     const res = await req({ url, rejectUnauthorized: false });

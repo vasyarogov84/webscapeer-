@@ -14,7 +14,7 @@ const scrapeByAddress = async (url) => {
     console.log(typeof addresStats);
     return { stats: addresStats, status: "success" };
   } catch (error) {
-    return { stats: null, status: "fail" };
+    return { stats: null, status: "fail", message: error.message };
   }
 };
 

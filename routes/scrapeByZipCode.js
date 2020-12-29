@@ -5,8 +5,8 @@ const scrapeByAddress = require("../utils/scrapeByAddress");
 
 router.get("/zipcode/:zipcode", async (req, res) => {
   const propertiesAvailableForSale = await scrapeByZipCode(req.params.zipcode);
-  const zipCodeState = await scrapeByAddress(propertiesAvailableForSale[0]);
-  res.json({ zipCodeState, propertiesAvailableForSale });
+  const zipCodeStats = await scrapeByAddress(propertiesAvailableForSale[0]);
+  res.json({ zipCodeStats, propertiesAvailableForSale });
 });
 
 module.exports = router;

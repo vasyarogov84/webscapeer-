@@ -3,24 +3,26 @@ const cheerio = require("cheerio");
 
 const scrapeByZipCode = async (zip) => {
   const url = `https://www.zillow.com/homes/${zip}_rb/`;
+  const result = [];
   try {
     const res = await req({ url, rejectUnauthorized: false });
 
-    let $ = cheerio.load(res);
+    const $ = cheerio.load(res);
 
-    const test = $(
-      'ul[class="photo-cards photo-cards_wow photo-cards_short"] > li'
-    ).each(function (i, e) {
-      console.log(
-        i,
-        $(e)
+    $('ul[class="photo-cards photo-cards_wow photo-cards_short"] > li').each(
+      function (i, e) {
+        const singleAddress = $(e)
           .find(
             'a[class="list-card-link list-card-link-top-margin list-card-img"]'
           )
-          .attr("href")
-      );
-    });
+          .attr("href");
+        if (singleAddress) result.push(singleAddress);
+      }
+    );
   } catch (error) {
     console.log("error", error);
   }
+  return result;
 };
+
+module.exports = scrapeByZipCode;

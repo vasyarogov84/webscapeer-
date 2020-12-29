@@ -5,8 +5,10 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const mainRoute = require("./routes");
-const scrapeRoute = require("./routes/scrape");
+const scrapeByAddress = require("./routes/scrapeByAddress");
+const scrapeByZipCode = require("./routes/scrapeByZipCode");
 
+require("dotenv").config();
 const app = express();
 
 // view engine setup
@@ -20,7 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", mainRoute);
-app.use("/", scrapeRoute);
+app.use("/", scrapeByAddress);
+app.use("/", scrapeByZipCode);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

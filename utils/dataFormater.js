@@ -1,9 +1,13 @@
 fs = require("fs");
+const unwanted = ["CA", "WA", "PR", "NY", "PR"];
+const zip = require("../zipCodes.json");
+const shortData = zip.forEach((el) => {
+  if (!unwanted.includes(el.state)) {
+    return el;
+  }
+});
 
-const zip = require("../zipCodeShort.json");
-const shortData = zip.map((el) => el.zip_code);
-
-fs.writeFile("onlyZipcodes.json", JSON.stringify(shortData), function (err) {
+fs.writeFile("1a.json", JSON.stringify(shortData), function (err) {
   if (err) return console.log(err);
   console.log("Hello World > helloworld.txt");
 });

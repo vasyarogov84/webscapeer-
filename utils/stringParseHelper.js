@@ -30,6 +30,6 @@ const stringParseHelper = (text) => {
   const history = rest.split(" ");
   const past = { [history[2]]: history[3] };
   if (!next[0]) return null;
-  return [pred, past];
+  return [history[3], next[1]];
 };
 module.exports = stringParseHelper;

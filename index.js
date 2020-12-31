@@ -4,7 +4,7 @@ const zipCodes = require("./utils/onlyZipcodes.json");
 const scrapeByZipCode = require("./utils/scrapeByZipCode");
 const scrapeByAddress = require("./utils/scrapeByAddress");
 let current = 0;
-
+const all = zipCodes.length;
 const interval = setInterval(async () => {
   let availableForSale;
   let zipCodeStats;
@@ -13,13 +13,14 @@ const interval = setInterval(async () => {
   zipCodeStats = await scrapeByAddress(
     availableForSale[Math.floor(Math.random() * availableForSale.length)]
   );
-  console.log("interval -> zipCodeStats", zipCodeStats);
+  console.log("zipCodeStats", zipCodeStats);
+  console.log("current", current);
 
   if (zipCodeStats) {
     fs.readFile("result.json", (err, data) => {
       var json = JSON.parse(data);
       json.push({
-        [zipCodes[current - 1]]: zipCodeStats,
+        [zipCodes[current - 10]]: zipCodeStats,
       });
       fs.writeFile("result.json", JSON.stringify(json), (err) => {
         if (err) throw err;
@@ -28,10 +29,10 @@ const interval = setInterval(async () => {
     });
   }
 
-  current++;
+  current = current + 10;
 }, 6000);
 
-if (current > zipCodes.length) {
+if (current > all) {
   clearInterval(interval);
 }
 

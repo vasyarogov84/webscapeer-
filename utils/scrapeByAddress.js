@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 const { pathOr } = require("ramda");
 const stringParseHelper = require("../utils/stringParseHelper");
 
-const testAddresses = require("./addressesTestSet");
+//const testAddresses = require("./addressesTestSet");
 
 const scrapeSingleAddress = async (address) => {
   try {
@@ -21,19 +21,18 @@ const scrapeSingleAddress = async (address) => {
       ? rent_Zillow_estimate[2].split("/mo").shift()
       : "";
     const zEst = rent_Zillow_estimate[1] ? rent_Zillow_estimate[1] : "";
-    console.log("scrapeSingleAddress -> rentEstimate", rentEstimate);
     let addresStats = $(
       'p[class="Text-c11n-8-18-0__aiai24-0 StyledParagraph-c11n-8-18-0__sc-18ze78a-0 pnHPs"]'
     ).text();
     const stats = stringParseHelper(addresStats);
-    return { ...stats, rent, zEst };
+    return { ...stats, rent, zEst, address  };
   } catch (error) {
     return { error: error.message };
   }
 };
 
-const scrapeByAddress = async (test) => {
-  const filterA = test.filter((add) => {
+const scrapeByAddress = async (arrOfAddresses) => {
+  const filterA = arrOfAddresses.filter((add) => {
     const firstCharacter = add.split("")[0];
     const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     if (arr.includes(+firstCharacter)) {
@@ -55,9 +54,7 @@ const scrapeByAddress = async (test) => {
       }
     }
   });
-  console.log("scrapeByAddress -> allResults", fResults);
+  return fResults.length ?  fResults : null;
 };
 
-scrapeByAddress(testAddresses);
-
-//module.exports = scrapeByAddress;
+module.exports = scrapeByAddress;

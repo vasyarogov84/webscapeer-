@@ -9,14 +9,12 @@ const all = zipCodes.length;
 
 const interval = setInterval(async () => {
   const availableForSale = await scrapeByZipCode(zipCodes[current]);
-  console.log("interval -> availableForSale", availableForSale);
+  const passToScrape = availableForSale.length ? availableForSale.slice(0,2) : [];
 
-  zipCodeStats = availableForSale.length
-    ? await scrapeByAddress(availableForSale)
+  zipCodeStats = passToScrape.length
+    ? await scrapeByAddress(passToScrape)
     : null;
-  // console.log("zipCodeStats", zipCodeStats);
-  // console.log("current", current);
-
+ 
   if (zipCodeStats) {
     fs.readFile("result.json", (err, data) => {
       var json = JSON.parse(data);
@@ -29,9 +27,11 @@ const interval = setInterval(async () => {
       });
     });
   }
-
+  const stats = fs.statSync("result.json")
+  console.log("SIZEEEEEEEE",stats.size);
+  console.log("CURRENT ZIP",zipCodes[current - 10])
   current = current + 10;
-}, 6000);
+}, 10000);
 
 if (current > all) {
   clearInterval(interval);

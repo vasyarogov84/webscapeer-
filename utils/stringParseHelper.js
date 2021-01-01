@@ -1,18 +1,25 @@
+const { pathOr } = require("ramda");
 const stringParseHelper = (text) => {
   const main = text.split("Home values in ").pop() || "";
 
   const estimate =
-    main
+    +main
       .split("The typical Zestimate® for this ZIP code is ")
       .pop()
       .split(".")[0]
       .split("$")
-      .pop() || "";
+      .pop()
+      .split(",")
+      .join("") || "";
   const rest =
     main.split("The typical Zestimate® for this ZIP code is ").shift() || "";
 
   const valuedString = rest.split("This home is valued ").pop().split(" ");
-  const value = { [valuedString[1]]: valuedString[0] };
+  const valueStringClean = +pathOr("", [0], valuedString)
+    .split("%")
+    .shift()
+    .trim();
+  const value = { [valuedString[1]]: valueStringClean };
 
   const cutValued =
     rest
@@ -27,10 +34,12 @@ const stringParseHelper = (text) => {
       .split(" will ")
       .pop()
       .split(" ") || "";
-  const f12 = { [next[0]]: next[1] };
+  const f12Clean = +pathOr("", [1], next).split("%").shift().trim();
+  const f12 = { [next[0]]: f12Clean };
 
-  const history = rest.split(" ") || "";
-  const p12 = { [history[2]]: history[3] };
+  const p12Raw = rest.split(" ") || "";
+  const p12Clean = +pathOr("", [3], p12Raw).split("%").shift().trim();
+  const p12 = { [p12Raw[2]]: p12Clean };
   if (!next[0]) return null;
   return { zip: estimate, val: value, p12, f12 };
 };

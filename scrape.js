@@ -1,5 +1,5 @@
 const fs = require("fs");
-const zipCodes = require("./utils/onlyZipcodes.json");
+const zipCodes = require("./data/Zipcodes.json");
 
 const scrapeByZipCode = require("./utils/scrapeByZipCode");
 const scrapeByAddress = require("./utils/scrapeByAddress");
@@ -25,7 +25,9 @@ const interval = setInterval(async () => {
     });
   }
   const stats = fs.statSync("result.json");
-  console.log("interval -> stats", stats);
+  console.log("-> stats", stats.size);
+  console.log("-> current",zipCodes[current - 1]);
+
 
   current = current + 1;
 }, 15000);

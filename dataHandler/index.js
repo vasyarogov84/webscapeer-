@@ -20,7 +20,7 @@ const getResultSaveToMongo = setInterval(() => {
   });
 
   set++;
-}, 10000);
+}, 100000);
 
 if (set > allZipCodes) {
   clearInterval(getResultSaveToMongo);

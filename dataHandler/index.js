@@ -9,21 +9,18 @@ let set = 0;
 const getResultSaveToMongo = setInterval(() => {
   fs.readFile("../result.json", async (err, data) => {
     const json = await JSON.parse(data);
-    //console.log("getResultSaveToMongo -> json", json);
 
-    await Promise.all(
+    if (json.length) {
       json.map(async (ell) => {
-        console.log("getResultSaveToMongo -> ell", ell);
         await axiosGraphql(ell)
-          .then((data) => console.log("data", data))
+          .then(({ message }) => console.log("data", message))
           .catch((err) => console.log(err));
-      }),
-      (err) => console.log(err)
-    );
+      });
+    }
   });
 
   set++;
-}, 5000);
+}, 10000);
 
 if (set > allZipCodes) {
   clearInterval(getResultSaveToMongo);

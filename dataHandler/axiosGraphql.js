@@ -5,12 +5,12 @@ const axiosGraphql = async (variables) => {
   const result = await axios
     .post("http://localhost:4000/", {
       query: `mutation addStats($input: ZipCodeAnalytics) {
-  addStats(input: $input) {
-    success
-    message
-  }
-}`,
-      variables,
+                addStats(input: $input) {
+                    success
+                    message
+                }
+            }`,
+      variables: { input: variables },
     })
     .then(({ data }) => {
       if (data.data.addStats.success) {

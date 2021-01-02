@@ -3,10 +3,11 @@ const req = require("request-promise");
 const cheerio = require("cheerio");
 const stringParseHelper = require("./stringParseHelper");
 
-const scrapeSingleAddress = async (url) => {
+const scrapeSingleAddress = async ({ singleAddress, price }) => {
+  console.log("scrapeSingleAddress -> url", singleAddress);
   try {
     const res = await req({
-      url: url,
+      url: singleAddress,
       rejectUnauthorized: false,
     });
 
@@ -25,7 +26,7 @@ const scrapeSingleAddress = async (url) => {
       'p[class="Text-c11n-8-18-0__aiai24-0 StyledParagraph-c11n-8-18-0__sc-18ze78a-0 pnHPs"]'
     ).text();
     const stats = stringParseHelper(addresStats);
-    return { ...stats, rent, zEst, url };
+    return { ...stats, rent, zEst, url: singleAddress, price };
   } catch (error) {
     console.log(error.message);
   }

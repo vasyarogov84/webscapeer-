@@ -19,7 +19,8 @@ const stringParseHelper = (text) => {
     .split("%")
     .shift()
     .trim();
-  const value = { [valuedString[1]]: valueStringClean };
+  const lower = valuedString[1] === "lower";
+  const value = { lower, percentage: valueStringClean };
 
   const cutValued =
     rest
@@ -35,12 +36,14 @@ const stringParseHelper = (text) => {
       .pop()
       .split(" ") || "";
   const f12Clean = +pathOr("", [1], next).split("%").shift().trim();
-  const f12 = { [next[0]]: f12Clean };
+  const increase = "increase" === next[0];
+  const f12 = { increase, percentage: f12Clean };
 
   const p12Raw = rest.split(" ") || "";
   const p12Clean = +pathOr("", [3], p12Raw).split("%").shift().trim();
-  const p12 = { [p12Raw[2]]: p12Clean };
+  const increased = "increased" === p12Raw[2];
+  const p12 = { increased, percentage: p12Clean };
   if (!next[0]) return null;
-  return { zip: estimate, val: value, p12, f12 };
+  return { zip_price: estimate, val: value, p12, f12 };
 };
 module.exports = stringParseHelper;

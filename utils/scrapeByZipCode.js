@@ -25,7 +25,8 @@ const scrapeByZipCode = async (zip) => {
       const houseForSaleText = $(e).find("div[class='list-card-type']").text();
       const house = houseForSaleText === "House for sale";
 
-      if (singleAddress && house && priceMatch) results.push(singleAddress);
+      if (singleAddress && house && priceMatch)
+        results.push({ singleAddress, price });
     });
   } catch (error) {
     console.log("error", error);

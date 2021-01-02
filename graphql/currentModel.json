@@ -1,0 +1,17 @@
+[
+  {
+    "zip_code": "15001",
+    "properties": [
+      {
+        "zip_price": 150685,
+        "val": { "lower": true, "percentage": 53.5 },
+        "p12": { "increased": true, "percentage": 53.5 },
+        "f12": { "increase": true, "percentage": 53.5 },
+        "rent": 845,
+        "price": 70000,
+        "zEst": 69941,
+        "url": "https://www.zillow.com/homedetails/1212-Wade-St-Aliquippa-PA-15001/204201299_zpid/"
+      }
+    ]
+  }
+]

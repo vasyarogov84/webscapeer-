@@ -15,8 +15,10 @@ const interval = setInterval(async () => {
   if (zipCodeStats.length) {
     fs.readFile("result.json", (err, data) => {
       const json = JSON.parse(data);
+      console.log("TEST", zipCodes[current]);
       json.push({
-        [zipCodes[current - 1]]: zipCodeStats,
+        zip_code: JSON.stringify(zipCodes[current]),
+        properties: zipCodeStats,
       });
       fs.writeFile("result.json", JSON.stringify(json), (err) => {
         if (err) throw err;
@@ -26,8 +28,7 @@ const interval = setInterval(async () => {
   }
   const stats = fs.statSync("result.json");
   console.log("-> stats", stats.size);
-  console.log("-> current",zipCodes[current - 1]);
-
+  console.log("-> current", zipCodes[current - 1]);
 
   current = current + 1;
 }, 15000);

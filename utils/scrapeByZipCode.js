@@ -3,6 +3,7 @@ const req = require("request-promise");
 const cheerio = require("cheerio");
 
 const scrapeByZipCode = async (zip) => {
+  console.log("scrapeByZipCode -> zip", zip);
   if (!zip) return { stats: "No data" };
   const url = `${process.env.ZILLOW_ZIP_CODE}${zip}_rb/`;
   const results = [];
@@ -20,12 +21,16 @@ const scrapeByZipCode = async (zip) => {
         )
         .attr("href");
       const priceRaw = $(e).find("div[class='list-card-price']").text();
+      const is2bathRaw = $(e).find("ul[class='list-card-details']").text();
+      const is2 =
+        is2bathRaw.split("bds").pop().split(" ").shift().split(",").pop() || "";
+      const is2bath = 2 === +is2;
       const price = +priceRaw.split("$").pop().split(",").join("") || 0;
-      const priceMatch = price && price > 50000 && price < 101000;
+      const priceMatch = price && price > 69000 && price < 125000;
       const houseForSaleText = $(e).find("div[class='list-card-type']").text();
       const house = houseForSaleText === "House for sale";
 
-      if (singleAddress && house && priceMatch)
+      if (singleAddress && house && priceMatch && is2bath)
         results.push({ singleAddress, price });
     });
   } catch (error) {

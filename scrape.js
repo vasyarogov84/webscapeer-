@@ -4,20 +4,25 @@ const zipCodes = require("./data/Zipcodes.json");
 const scrapeByZipCode = require("./utils/scrapeByZipCode");
 const scrapeByAddress = require("./utils/scrapeByAddress");
 
+const currentState = zipCodes[0].state;
+console.log("currentState", currentState);
+const currentStateCities = zipCodes[0].cities;
 let current = 0;
-const all = zipCodes.length;
 
 const interval = setInterval(async () => {
-  const availableForSale = await scrapeByZipCode(zipCodes[current]);
+  const city = currentStateCities[current];
+  console.log("interval -> zip_code", city);
+  const availableForSale = await scrapeByZipCode(city.zip_code);
 
   const zipCodeStats = await scrapeByAddress(availableForSale);
+  console.log("interval -> zipCodeStats", zipCodeStats);
 
   if (zipCodeStats.length) {
     fs.readFile("result.json", (err, data) => {
       const json = JSON.parse(data);
-      console.log("TEST", zipCodes[current]);
       json.push({
-        zip_code: JSON.stringify(zipCodes[current - 1]),
+        state: currentState,
+        city,
         properties: zipCodeStats,
       });
       fs.writeFile("result.json", JSON.stringify(json), (err) => {
@@ -27,12 +32,14 @@ const interval = setInterval(async () => {
     });
   }
   const stats = fs.statSync("result.json");
-  console.log("-> stats", stats.size);
-  console.log("-> current", zipCodes[current - 1]);
+  console.log(stats.size);
 
   current = current + 1;
 }, 15000);
 
-if (current > all) {
+if (
+  current === currentStateCities.length ||
+  current > currentStateCities.length
+) {
   clearInterval(interval);
 }

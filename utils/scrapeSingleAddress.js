@@ -4,7 +4,6 @@ const cheerio = require("cheerio");
 const stringParseHelper = require("./stringParseHelper");
 
 const scrapeSingleAddress = async ({ singleAddress, price }) => {
-  console.log("scrapeSingleAddress -> url", singleAddress);
   try {
     const res = await req({
       url: singleAddress,
@@ -21,12 +20,14 @@ const scrapeSingleAddress = async ({ singleAddress, price }) => {
       .shift()
       .split(",")
       .join("");
+    if (!rent) return {};
     const zEst = +pathOr("", [1], rentEstimate).split(",").join("");
     let addresStats = $(
       'p[class="Text-c11n-8-18-0__aiai24-0 StyledParagraph-c11n-8-18-0__sc-18ze78a-0 pnHPs"]'
     ).text();
+    const cashFlow = rent - Math.floor(price / 200);
     const stats = stringParseHelper(addresStats);
-    return { ...stats, rent, zEst, url: singleAddress, price };
+    return { ...stats, rent, zEst, url: singleAddress, price, cashFlow };
   } catch (error) {
     console.log(error.message);
   }

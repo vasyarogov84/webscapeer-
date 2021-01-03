@@ -13,7 +13,7 @@ const getResultSaveToMongo = setInterval(() => {
     if (json.length) {
       json.map(async (ell) => {
         await axiosGraphql(ell)
-          .then(({ message }) => console.log("data", message))
+          .then((data) => console.log("data", data))
           .catch((err) => console.log(err));
       });
     }

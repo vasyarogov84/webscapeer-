@@ -17,7 +17,7 @@ const interval = setInterval(async () => {
       const json = JSON.parse(data);
       console.log("TEST", zipCodes[current]);
       json.push({
-        zip_code: JSON.stringify(zipCodes[current]),
+        zip_code: JSON.stringify(zipCodes[current - 1]),
         properties: zipCodeStats,
       });
       fs.writeFile("result.json", JSON.stringify(json), (err) => {

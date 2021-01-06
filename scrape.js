@@ -35,7 +35,7 @@ const interval = setInterval(async () => {
   console.log(stats.size);
 
   current = current + 1;
-}, 15000);
+}, 10000);
 
 if (
   current === currentStateCities.length ||

@@ -1,27 +1,34 @@
 const fs = require("fs");
+const zipCodes = require("../data/zipCodes.json");
 const axiosGraphql = require("./axiosGraphql");
 
-const zipCodes = require("../data/zipCodes.json");
-const allZipCodes = zipCodes.length;
-console.log("allZipCodes", allZipCodes);
-let set = 0;
+const currentStateCities = zipCodes[0].cities;
+let current = 0;
 
 const getResultSaveToMongo = setInterval(() => {
   fs.readFile("../result.json", async (err, data) => {
     const json = await JSON.parse(data);
 
     if (json.length) {
-      json.map(async (ell) => {
-        await axiosGraphql(ell)
+      console.log("🚀 ~ file: index.js ~ line 13 ~ fs.readFile ~ json", json)
+      await json.map(async (ell,i) => {
+        await axiosGraphql(ell, json.length, i)
           .then((data) => console.log("data", data))
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            clearInterval(getResultSaveToMongo)
+            console.log(err)});
       });
     }
   });
 
-  set++;
-}, 100000);
+  current +=12;
+  if (current > currentStateCities.length) {
+    clearInterval(getResultSaveToMongo);
+  }
+}, 120000);
 
-if (set > allZipCodes) {
-  clearInterval(getResultSaveToMongo);
-}
+
+ 
+  // if () {
+  //   clearInterval(getResultSaveToMongo);
+  // }

@@ -2,7 +2,7 @@ const fs = require("fs");
 const zipCodes = require("../data/zipCodes.json");
 const axiosGraphql = require("./axiosGraphql");
 
-const currentStateCities = zipCodes[0].cities;
+const currentStateCities = zipCodes[2].cities;
 let current = 0;
 
 const getResultSaveToMongo = setInterval(() => {
@@ -21,11 +21,11 @@ const getResultSaveToMongo = setInterval(() => {
     }
   });
 
-  current +=12;
+  current +=10;
   if (current > currentStateCities.length) {
     clearInterval(getResultSaveToMongo);
   }
-}, 120000);
+}, 200000);
 
 
  

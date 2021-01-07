@@ -4,9 +4,9 @@ const zipCodes = require("./data/Zipcodes.json");
 const scrapeByZipCode = require("./utils/scrapeByZipCode");
 const scrapeByAddress = require("./utils/scrapeByAddress");
 
-const currentState = zipCodes[0].state;
+const currentState = zipCodes[2].state;
 console.log("currentState", currentState);
-const currentStateCities = zipCodes[0].cities;
+const currentStateCities = zipCodes[2].cities;
 let current = 0;
 
 const interval = setInterval(async () => {

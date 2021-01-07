@@ -3,9 +3,9 @@ const req = require('request-promise');
 const cheerio = require('cheerio');
 
 const scrapeByZipCode = async (zip) => {
-  console.log('scrapeByZipCode -> zip', zip);
+  console.log('zip', zip);
   if (!zip) return { stats: 'No data' };
-  const url = `https://www.zillow.com/homes/${zip}_rb/`;
+  const url = `https://www.zillow.com/homes/for_sale/${zip}_rb/`;
   const results = [];
   try {
     const res = await req({ url, rejectUnauthorized: false });
@@ -21,6 +21,7 @@ const scrapeByZipCode = async (zip) => {
         )
         .attr('href');
       const priceRaw = $(e).find("div[class='list-card-price']").text();
+      console.log("🚀 ~ file: scrapeByZipCode.js ~ line 24 ~ priceRaw", priceRaw)
       const is2bathRaw = $(e).find("ul[class='list-card-details']").text();
       const is2or3bdRaw = is2bathRaw.split(' ').shift();
       const is2or3bd = +is2or3bdRaw === 2 || +is2or3bdRaw === 3;
@@ -28,11 +29,12 @@ const scrapeByZipCode = async (zip) => {
         is2bathRaw.split('bds').pop().split(' ').shift().split(',').pop() || '';
       const is2bath = 2 === +is2;
       const price = +priceRaw.split('$').pop().split(',').join('') || 0;
-      const isPriceMatch = price && price > 69000 && price < 125000;
+      const isPriceMatch = price && price > 69000 && price < 135000;
       const houseForSaleText = $(e).find("div[class='list-card-type']").text();
+      console.log("🚀 ~ file: scrapeByZipCode.js ~ line 34 ~ houseForSaleText", houseForSaleText)
       const house = houseForSaleText === 'House for sale';
 
-      if (singleAddress && house && isPriceMatch && is2bath && is2or3bd)
+      if (singleAddress && isPriceMatch && is2bath && is2or3bd)
         results.push({ singleAddress, price });
     });
   } catch (error) {

@@ -44,7 +44,7 @@ const stringParseHelper = (text) => {
   const p12Clean = +pathOr('', [3], p12Raw).split('%').shift().trim();
   const increased = 'increased' === p12Raw[2];
   const p12 = { increased, percentage: p12Clean };
-  if (p12Clean) return {};
+  if (!p12Clean) return {};
   if (!next[0]) return null;
   return { zip_price: estimate, val: value, p12, f12 };
 };
